@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Scratch & test debug artifacts
+scratch/
+test_*.png
+
+# Python cache
+__pycache__/
+*.pyc
+
+# System files
+.DS_Store
+Thumbs.db
