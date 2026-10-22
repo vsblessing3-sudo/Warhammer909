@@ -1,0 +1,135 @@
+{
+  "marine": {
+    "idle_left": [
+      "idle_left_0.png"
+    ],
+    "idle_right": [
+      "idle_right_0.png"
+    ],
+    "move_right": [
+      "move_right_0.png",
+      "move_right_1.png",
+      "move_right_2.png",
+      "move_right_3.png",
+      "move_right_4.png",
+      "move_right_5.png",
+      "move_right_6.png",
+      "move_right_7.png"
+    ],
+    "move_left": [
+      "move_left_0.png",
+      "move_left_1.png",
+      "move_left_2.png",
+      "move_left_3.png",
+      "move_left_4.png",
+      "move_left_5.png",
+      "move_left_6.png",
+      "move_left_7.png"
+    ],
+    "jump": [
+      "jump_0.png",
+      "jump_1.png",
+      "jump_2.png",
+      "jump_3.png",
+      "jump_4.png",
+      "jump_5.png",
+      "jump_6.png",
+      "jump_7.png"
+    ],
+    "aim": [
+      "aim_0.png",
+      "aim_1.png",
+      "aim_2.png",
+      "aim_3.png",
+      "aim_4.png",
+      "aim_5.png",
+      "aim_6.png",
+      "aim_7.png"
+    ],
+    "fire": [
+      "fire_0.png",
+      "fire_1.png",
+      "fire_2.png",
+      "fire_3.png",
+      "fire_4.png",
+      "fire_5.png",
+      "fire_6.png",
+      "fire_7.png"
+    ],
+    "crouch": [
+      "crouch_0.png",
+      "crouch_1.png",
+      "crouch_2.png",
+      "crouch_3.png",
+      "crouch_4.png",
+      "crouch_5.png",
+      "crouch_6.png",
+      "crouch_7.png"
+    ],
+    "punch": [
+      "punch_0.png",
+      "punch_1.png",
+      "punch_2.png",
+      "punch_3.png",
+      "punch_4.png",
+      "punch_5.png",
+      "punch_6.png",
+      "punch_7.png"
+    ],
+    "idle": [
+      "idle_right_0.png"
+    ]
+  },
+  "enemybot1": {
+    "turn_left": [
+      "turn_left_0.png",
+      "turn_left_1.png",
+      "turn_left_2.png",
+      "turn_left_3.png",
+      "turn_left_4.png"
+    ],
+    "turn_right": [
+      "turn_right_0.png",
+      "turn_right_1.png",
+      "turn_right_2.png",
+      "turn_right_3.png",
+      "turn_right_4.png"
+    ],
+    "charge": [
+      "charge_0.png",
+      "charge_1.png",
+      "charge_2.png",
+      "charge_3.png",
+      "charge_4.png"
+    ],
+    "punch_left": [
+      "punch_left_0.png",
+      "punch_left_1.png",
+      "punch_left_2.png",
+      "punch_left_3.png",
+      "punch_left_4.png",
+      "punch_left_5.png"
+    ],
+    "punch_right": [
+      "punch_right_0.png",
+      "punch_right_1.png",
+      "punch_right_2.png",
+      "punch_right_3.png",
+      "punch_right_4.png",
+      "punch_right_5.png"
+    ],
+    "walk": [
+      "walk_0.png",
+      "walk_1.png",
+      "walk_2.png",
+      "walk_3.png",
+      "walk_4.png",
+      "walk_5.png",
+      "walk_6.png",
+      "walk_7.png"
+    ],
+    "idle": [
+      "turn_left_0.png"
+    ]
+  }
+}

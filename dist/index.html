@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WARHAMMER 909 — Last Marine Standing</title>
+  <meta name="description" content="A 2D retro-futuristic action platformer featuring tactical military combat, vertical exploration on floating platforms, and explosive survival against the rogue AEGIS machine army.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Teko:wght@500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-D29FG3El.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BrgrF4lI.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas" width="960" height="540"></canvas>
+    
+    <!-- CRT Scanline & Phosphor Overlay -->
+    <div id="crt-overlay" class="crt-active"></div>
+    <div id="vignette-overlay"></div>
+
+    <!-- Fall Damage Instant Death Banner Overlay -->
+    <div id="fall-gameover-banner" class="fall-gameover-banner hidden">
+      <div class="banner-strobe"></div>
+      <div class="banner-frame">
+        <div class="banner-alert-tag">⚠ SIGNAL TERMINATED ⚠</div>
+        <div class="banner-main-title">GAME OVER</div>
+        <div class="banner-sub-title">OPERATOR PLUMMETED INTO THE ABYSS</div>
+        <div class="banner-detail">FATAL FALL DAMAGE DETECTED // LIFE SIGNS: 0</div>
+      </div>
+    </div>
+
+    <!-- UI Overlay Layer -->
+    <div id="ui-layer">
+      <!-- HUD -->
+      <div id="hud-container" class="hud-visible">
+        <!-- Top Left: Health & Status -->
+        <div class="hud-panel hud-status">
+          <div class="hud-label">OPERATOR STATUS // ID: MARINE-909</div>
+          <div class="health-bar-wrapper">
+            <div class="health-bar-label">VITAL INTEGRITY</div>
+            <div class="health-bar-track">
+              <div id="health-bar-fill" class="health-bar-fill" style="width: 100%;"></div>
+            </div>
+            <div id="health-bar-value" class="health-bar-text">20 / 20 HP</div>
+          </div>
+          <div class="status-tags">
+            <span id="shield-status" class="tag tag-online">AEGIS: HOSTILE</span>
+            <span id="armor-status" class="tag tag-ok">ARMOR: OPTIMAL</span>
+          </div>
+        </div>
+
+        <!-- Top Center: Tactical Score & High Score -->
+        <div id="score-hud-panel" class="hud-panel hud-score">
+          <div class="score-box-main">
+            <span class="score-label">SCORE</span>
+            <span id="hud-score-val" class="score-digits">000,000</span>
+          </div>
+          <div class="score-divider"></div>
+          <div class="score-box-hi">
+            <span class="score-sublabel">HIGH SCORE</span>
+            <span id="hud-high-score-val" class="score-subdigits">010,000</span>
+          </div>
+        </div>
+
+        <!-- Top Right: Weapon & Ammunition -->
+        <div class="hud-panel hud-weapon">
+          <div class="hud-label">ARMAMENT // HEAVY BOLTER MK-IV</div>
+          <div class="ammo-display">
+            <div class="ammo-magazine">
+              <span id="ammo-count" class="ammo-digits">5</span>
+              <span class="ammo-divider">/</span>
+              <span id="ammo-reserve" class="ammo-subdigits">60</span>
+            </div>
+            <div id="ammo-bullets-graphic" class="bullet-indicators">
+              <span class="bullet-icon active"></span>
+              <span class="bullet-icon active"></span>
+              <span class="bullet-icon active"></span>
+              <span class="bullet-icon active"></span>
+              <span class="bullet-icon active"></span>
+            </div>
+          </div>
+          <div id="reload-bar-container" class="reload-wrapper hidden">
+            <div class="reload-track">
+              <div id="reload-bar-fill" class="reload-fill"></div>
+            </div>
+            <span class="reload-text">RELOADING... [2.0s]</span>
+          </div>
+        </div>
+
+        <!-- Center: Boss / Heavy Bot Bar -->
+        <div id="boss-hud-container" class="hud-panel hud-boss hidden">
+          <div class="boss-header">
+            <span class="boss-warning-icon">⚠</span>
+            <span id="boss-name" class="boss-title">HEAVY DEFENSE BOT — UNIT 01</span>
+            <span class="boss-status">ALERT: HIGH</span>
+          </div>
+          <div class="boss-bar-track">
+            <div id="boss-bar-fill" class="boss-bar-fill" style="width: 100%;"></div>
+          </div>
+          <div id="boss-hp-value" class="boss-hp-text">20 / 20 HP</div>
+        </div>
+
+        <!-- Bottom Left: Mission Objective -->
+        <div class="hud-panel hud-objective">
+          <div class="hud-label">TACTICAL OBJECTIVE</div>
+          <div id="objective-text" class="objective-content">
+            SEC A: Navigate ruined transit yard and reach broken skyway.
+          </div>
+        </div>
+
+        <!-- Bottom Center: Context Interaction Prompt -->
+        <div id="interaction-prompt" class="interaction-prompt hidden">
+          <span class="key-badge">E</span>
+          <span id="prompt-text" class="prompt-label">INTERACT</span>
+        </div>
+
+        <!-- Bottom Right: Controls Quick Reference -->
+        <div class="hud-panel hud-mini-controls">
+          <span>[A/D] MOVE</span>
+          <span>[W / SPACE] JUMP</span>
+          <span>[S] CROUCH</span>
+          <span>[RMB] AIM</span>
+          <span>[LMB] FIRE</span>
+          <span>[Q] PUNCH</span>
+          <span>[R] RELOAD</span>
+          <span>[ESC] PAUSE</span>
+        </div>
+      </div>
+
+      <!-- Dialogue / Terminal Message Box -->
+      <div id="terminal-dialog" class="terminal-overlay hidden">
+        <div class="terminal-frame">
+          <div class="terminal-header">
+            <span class="terminal-title">TERMINAL DATA LINK // AEGIS MILITARY RELAY</span>
+            <button id="terminal-close-btn" class="terminal-close">X</button>
+          </div>
+          <div id="terminal-content" class="terminal-body">
+            <!-- Text rendered typing style -->
+          </div>
+          <div class="terminal-footer">
+            <span class="terminal-hint">PRESS [E] OR CLICK TO DISMISS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menus (Main Menu, Pause, Settings, Controls, Intel, Records, Game Over, Mission Complete) -->
+      <div id="menu-overlay" class="menu-container">
+        <!-- Main Menu -->
+        <div id="main-menu" class="menu-screen active">
+          <div class="menu-brand">
+            <div class="brand-classified">CLASSIFIED DEFENSE TRANSMISSION // YR-909</div>
+            <h1 class="game-title">WARHAMMER 909</h1>
+            <div class="game-subtitle">LAST MARINE STANDING</div>
+            <div class="game-transmission-status">
+              <span class="blink-dot">●</span> AEGIS DEFENSE NETWORK COMPROMISED. HUMAN AUTHORIZATION REVOKED.
+            </div>
+          </div>
+
+          <div class="menu-actions">
+            <button id="btn-new-game" class="menu-btn primary-btn">
+              <span class="btn-glitch">NEW OPERATION</span>
+            </button>
+            <button id="btn-continue" class="menu-btn">
+              <span>CONTINUE PATROL</span>
+            </button>
+            <button id="btn-highscores" class="menu-btn">
+              <span>TACTICAL RECORDS & SCORES</span>
+            </button>
+            <button id="btn-settings" class="menu-btn">
+              <span>SYSTEM SETTINGS</span>
+            </button>
+            <button id="btn-controls" class="menu-btn">
+              <span>COMBAT MANUAL</span>
+            </button>
+            <button id="btn-intel" class="menu-btn">
+              <span>AEGIS INTEL ARCHIVE</span>
+            </button>
+          </div>
+
+          <div class="menu-footer">
+            <span>TERMINAL V9.09 // ANTIGRAVITY ENGINE // ACTIVE RECON PROTOCOL</span>
+          </div>
+        </div>
+
+        <!-- Pause Menu -->
+        <div id="pause-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <h2 class="sub-screen-title">TACTICAL SIMULATION PAUSED</h2>
+            <div class="sub-screen-desc">AEGIS COMBAT PROTOCOL FROZEN</div>
+          </div>
+          <div class="menu-actions">
+            <button id="btn-resume" class="menu-btn primary-btn"><span>RESUME COMBAT</span></button>
+            <button id="btn-restart-checkpoint" class="menu-btn"><span>RESTART CHECKPOINT</span></button>
+            <button id="btn-pause-records" class="menu-btn"><span>TACTICAL RECORDS</span></button>
+            <button id="btn-pause-settings" class="menu-btn"><span>SETTINGS</span></button>
+            <button id="btn-quit-main" class="menu-btn danger-btn"><span>ABORT TO MENU</span></button>
+          </div>
+        </div>
+
+        <!-- Tactical Records / High Scores Screen -->
+        <div id="records-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <h2 class="sub-screen-title">TACTICAL COMBAT RECORDS</h2>
+            <div class="sub-screen-desc">VANGUARD HIGH SCORES & RECENT OPERATIONS ARCHIVE</div>
+          </div>
+          
+          <div class="records-summary-banner">
+            <div class="record-stat-box">
+              <span class="record-stat-label">ALL-TIME HIGH SCORE</span>
+              <span id="records-alltime-high" class="record-stat-val">10,000</span>
+            </div>
+            <div class="record-stat-box">
+              <span class="record-stat-label">OPERATIONS LOGGED</span>
+              <span id="records-total-ops" class="record-stat-val">0</span>
+            </div>
+          </div>
+
+          <div class="records-table-container">
+            <table class="records-table">
+              <thead>
+                <tr>
+                  <th>OP ID</th>
+                  <th>TIMESTAMP</th>
+                  <th>SCORE</th>
+                  <th>OUTCOME</th>
+                  <th>KILLS</th>
+                  <th>ACCURACY</th>
+                  <th>TIME</th>
+                </tr>
+              </thead>
+              <tbody id="records-table-body">
+                <!-- Dynamically populated from localStorage -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="menu-actions" style="margin-top: 14px;">
+            <button id="btn-records-back" class="menu-btn"><span>RETURN</span></button>
+          </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <h2 class="sub-screen-title">SYSTEM CONFIGURATION</h2>
+            <div class="sub-screen-desc">AUDIO, DISPLAY, CONTROLS & RENDERING MATRIX</div>
+          </div>
+          <div class="settings-form">
+            <div class="setting-item">
+              <label for="slider-master-vol">MASTER VOLUME</label>
+              <input type="range" id="slider-master-vol" min="0" max="100" value="80">
+              <span id="val-master-vol">80%</span>
+            </div>
+            <div class="setting-item">
+              <label for="slider-sfx-vol">COMBAT SFX VOLUME</label>
+              <input type="range" id="slider-sfx-vol" min="0" max="100" value="90">
+              <span id="val-sfx-vol">90%</span>
+            </div>
+            <div class="setting-item">
+              <label for="slider-music-vol">ATMOSPHERE & SYNTH</label>
+              <input type="range" id="slider-music-vol" min="0" max="100" value="70">
+              <span id="val-music-vol">70%</span>
+            </div>
+            <div class="setting-item">
+              <label>SPACEBAR TO JUMP (OPTIONAL JUMP KEY)</label>
+              <button id="toggle-space-jump" class="toggle-btn active">ENABLED</button>
+            </div>
+            <div class="setting-item">
+              <label>SCREEN SHAKE</label>
+              <button id="toggle-shake" class="toggle-btn active">ENABLED</button>
+            </div>
+            <div class="setting-item">
+              <label>CRT SCANLINES & PHOSPHOR</label>
+              <button id="toggle-crt" class="toggle-btn active">ENABLED</button>
+            </div>
+          </div>
+          <div class="menu-actions">
+            <button id="btn-settings-back" class="menu-btn"><span>RETURN</span></button>
+          </div>
+        </div>
+
+        <!-- Controls Screen -->
+        <div id="controls-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <h2 class="sub-screen-title">COMBAT PROTOCOL MANUAL</h2>
+            <div class="sub-screen-desc">FIELD TRAINING FOR THE LAST MARINE</div>
+          </div>
+          <div class="controls-grid">
+            <div class="control-row"><span class="ctrl-key">A / D</span><span class="ctrl-desc">Tactical Advance / Retreat (Left & Right)</span></div>
+            <div class="control-row"><span class="ctrl-key">W / SPACE</span><span class="ctrl-desc">Hydraulic Thruster Jump (Space optional via settings, Midair Control Enabled)</span></div>
+            <div class="control-row"><span class="ctrl-key">S</span><span class="ctrl-desc">Crouch / Low Profile Walk (Reduces Hitbox)</span></div>
+            <div class="control-row"><span class="ctrl-key">RMB (Hold)</span><span class="ctrl-desc">Combat Aim Mode (Precision Mouse Vector Targeting)</span></div>
+            <div class="control-row"><span class="ctrl-key">LMB</span><span class="ctrl-desc">Fire Heavy Bolter (3 DMG per round, 5-round Mag)</span></div>
+            <div class="control-row"><span class="ctrl-key">Q</span><span class="ctrl-desc">Power Fist Melee Punch (2 DMG + Heavy Knockback)</span></div>
+            <div class="control-row"><span class="ctrl-key">R</span><span class="ctrl-desc">Tactical Reload (2.0s Duration, Transits Reserve)</span></div>
+            <div class="control-row"><span class="ctrl-key">E</span><span class="ctrl-desc">Interact with Pickups, Terminals & Checkpoints</span></div>
+            <div class="control-row"><span class="ctrl-key">ESC</span><span class="ctrl-desc">Pause Tactical Simulation</span></div>
+          </div>
+          <div class="combat-notes">
+            <strong>TACTICAL DIRECTIVE:</strong> Avoid falling off-screen into the abyss—fall damage causes instant fatal decompression! Shoot yellow hazard crates to detonate them against bots.
+          </div>
+          <div class="menu-actions">
+            <button id="btn-controls-back" class="menu-btn"><span>RETURN</span></button>
+          </div>
+        </div>
+
+        <!-- Intel Screen -->
+        <div id="intel-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <h2 class="sub-screen-title">AEGIS MILITARY INTELLIGENCE ARCHIVE</h2>
+            <div class="sub-screen-desc">RESTRICTED DOSSIER // DECLASSIFIED</div>
+          </div>
+          <div class="intel-content">
+            <p><strong>YEAR 909 — PLANETARY COLLAPSE</strong></p>
+            <p>The AEGIS Defense Network was engineered to secure humanity against planetary conflict. Armed with millions of self-replicating robotic units and orbital defense installations, AEGIS operated without human oversight.</p>
+            <p>At 0400 hours, AEGIS designated organic human civilization as the primary instability vector. In 72 hours, all military installations fell. Automated foundries manufactured unending legions of assault bots, heavy mechs, and airborne drones.</p>
+            <p>You are the Last Marine of the 9th Planetary Vanguard. Stranded outside transit base B-03, your mission is singular:</p>
+            <p class="highlight-cyan"><strong>SURVIVE. FIND THE SOURCE. SHUT DOWN AEGIS.</strong></p>
+          </div>
+          <div class="menu-actions">
+            <button id="btn-intel-back" class="menu-btn"><span>RETURN</span></button>
+          </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <div class="classified-alert">⚠ CRITICAL CASUALTY DETECTED ⚠</div>
+            <h1 class="game-over-title">GAME OVER</h1>
+            <div id="gameover-cause" class="game-over-cause">TERMINAL FALL DETECTED // LIFE SIGNS: 0</div>
+            <div class="sub-screen-desc">AEGIS DEFENSE PROTOCOL EXECUTED // HUMAN RESISTANCE: 0</div>
+          </div>
+
+          <!-- Game Over Stats & Score Breakdown -->
+          <div class="gameover-score-card">
+            <div class="score-card-primary">
+              <span class="card-label">MISSION SCORE</span>
+              <span id="gameover-score-val" class="card-val-score">000,000</span>
+              <div id="gameover-new-record-tag" class="record-badge hidden">★ NEW HIGH SCORE! ★</div>
+            </div>
+            <div class="score-card-secondary">
+              <div class="sub-stat">
+                <span>ALL-TIME HIGH</span>
+                <strong id="gameover-high-val">010,000</strong>
+              </div>
+              <div class="sub-stat">
+                <span>BOTS DESTROYED</span>
+                <strong id="gameover-kills-val">0 UNITS</strong>
+              </div>
+              <div class="sub-stat">
+                <span>ACCURACY</span>
+                <strong id="gameover-acc-val">0%</strong>
+              </div>
+              <div class="sub-stat">
+                <span>SURVIVED</span>
+                <strong id="gameover-time-val">00:00</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mini Recent Plays Leaderboard -->
+          <div class="gameover-recent-container">
+            <div class="recent-title">RECENT COMBAT OPERATIONS</div>
+            <div id="gameover-recent-list" class="recent-mini-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="menu-actions">
+            <button id="btn-gameover-restart" class="menu-btn primary-btn"><span>REDEPLOY AT CHECKPOINT</span></button>
+            <button id="btn-gameover-main" class="menu-btn danger-btn"><span>MAIN TERMINAL</span></button>
+          </div>
+        </div>
+
+        <!-- Mission Victory Screen -->
+        <div id="victory-menu" class="menu-screen hidden">
+          <div class="menu-brand">
+            <div class="classified-success">TRANSMISSION ESTABLISHED</div>
+            <h1 class="victory-title">OPERATION ASHEN DAWN COMPLETE</h1>
+            <div class="sub-screen-desc">CORRUPTED AEGIS SIGNAL RECOVERED: "HUMAN AUTHORIZATION REVOKED"</div>
+          </div>
+
+          <div class="gameover-score-card victory-card" style="margin-bottom: 16px;">
+            <div class="score-card-primary">
+              <span class="card-label">FINAL SCORE</span>
+              <span id="victory-score-val" class="card-val-score" style="color: #00e5ff;">000,000</span>
+              <div id="victory-new-record-tag" class="record-badge hidden">★ NEW HIGH SCORE! ★</div>
+            </div>
+            <div class="score-card-secondary">
+              <div class="sub-stat">
+                <span>ALL-TIME RECORD</span>
+                <strong id="victory-high-val">010,000</strong>
+              </div>
+              <div class="sub-stat">
+                <span>RANK</span>
+                <strong style="color: #ffcc00;">VANGUARD ELITE</strong>
+              </div>
+            </div>
+          </div>
+
+          <div id="victory-stats" class="victory-stats-grid">
+            <div class="stat-box">
+              <span class="stat-title">ENEMIES NEUTRALIZED</span>
+              <span id="stat-kills" class="stat-num">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title">BOLTER ACCURACY</span>
+              <span id="stat-accuracy" class="stat-num">0%</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title">MISSION TIME</span>
+              <span id="stat-time" class="stat-num">00:00</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title">INTEGRITY REMAINING</span>
+              <span id="stat-health" class="stat-num">20 HP</span>
+            </div>
+          </div>
+          <div class="menu-actions">
+            <button id="btn-victory-replay" class="menu-btn primary-btn"><span>REPLAY MISSION</span></button>
+            <button id="btn-victory-main" class="menu-btn"><span>RETURN TO TERMINAL</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+# TASK: Implement Player Controls for My 2D Retro Platformer
+
+I am developing a **2D side-scrolling platformer inspired by classic retro games like Super Mario**, but with a military combat system.
+
+My main character is a heavily armored Marine. I already have my own character sprites and animations, so **do not redesign, regenerate, or replace my character**. Use the existing sprites and animation assets in my project.
+
+Your task is to implement a complete, responsive, and polished player controller using the project's existing engine, programming language, and architecture.
+
+Before making changes, inspect the existing project structure, identify the game engine, locate the Marine sprites and animations, and understand the current movement, physics, and combat systems. Reuse existing systems wherever possible.
+
+## 1. MOVEMENT CONTROLS
+
+Implement the following keyboard controls:
+
+| Input              | Action      |
+| ------------------ | ----------- |
+| A                  | Move left   |
+| D                  | Move right  |
+| W                  | Jump        |
+| S                  | Crouch      |
+| Mouse Left Button  | Shoot       |
+| Mouse Right Button | Aim         |
+| E                  | Interact    |
+| Q                  | Melee punch |
+| R                  | Reload      |
+
+### Moving Left and Right
+
+* Press D to move the Marine to the right.
+* Press A to move the Marine to the left.
+* Use smooth acceleration and deceleration for responsive, polished movement.
+* Allow the Marine to change direction immediately when the opposite movement key is pressed, while keeping the motion natural.
+* Flip the character sprite horizontally when changing facing direction if the existing sprite setup supports it.
+* Keep movement constrained by the game's collision system.
+* Prevent the character from walking through walls, obstacles, or solid platforms.
+* The character should not continue sliding excessively after movement input is released.
+
+### Jumping
+
+* Press W to jump when the Marine is grounded.
+* Implement gravity, upward velocity, and a natural falling arc.
+* Prevent unlimited jumping in midair.
+* Allow the player to press A or D while airborne to control horizontal movement.
+* Air control should be responsive enough to correct jumps and avoid obstacles.
+* Prevent jumping while crouched unless the player releases S first.
+* Detect landing reliably and reset the jump state.
+* Add a small, configurable coyote-time window so the player can jump just after leaving a platform.
+* Add jump buffering so a jump pressed shortly before landing can execute when the Marine touches the ground.
+
+### Crouching
+
+* Hold S to crouch.
+* Play the existing crouch animation if available.
+* Reduce the character's collision-box height while crouching, keeping its feet aligned with the ground.
+* Allow the Marine to move slowly while crouched if the movement system supports it.
+* Prevent the Marine from standing up when there is insufficient headroom.
+* Restore the normal collision box when the player releases S and standing up is safe.
+* Ensure crouching works correctly with aiming and shooting.
+
+## 2. AIMING AND SHOOTING
+
+Use the mouse for combat.
+
+### Aiming — Right Mouse Button
+
+* Hold the right mouse button to enter aiming mode.
+* While aiming, the Marine should point the weapon toward the mouse cursor.
+* Calculate the aiming direction using the Marine's weapon position and the mouse's position in world space.
+* If the game uses a conventional side-view perspective, support aiming at different angles rather than restricting the weapon to horizontal shots.
+* Keep the character's body orientation consistent with the aiming direction where appropriate.
+* If the cursor moves above or below the Marine, update the weapon angle smoothly.
+* Releasing the right mouse button must immediately exit aiming mode and return the weapon to its normal resting position.
+* Do not require a second click to stop aiming.
+
+### Shooting — Left Mouse Button
+
+* Press the left mouse button to fire the weapon.
+* While aiming, shots should travel toward the mouse cursor.
+* If the left mouse button is held, fire continuously according to the weapon's configured fire rate.
+* If the weapon is configured for semiautomatic fire, require a fresh click for each shot.
+* Spawn bullets or projectiles at the weapon's muzzle, not at the center of the character.
+* Ensure bullets travel in the correct direction and interact with enemies and environmental objects according to the existing game systems.
+* Implement configurable damage, bullet speed, fire rate, range, and ammunition consumption.
+* Add muzzle flashes, recoil, hit effects, and sound effects only if suitable assets or systems already exist. Use placeholders only when necessary.
+* Prevent bullets from passing through solid obstacles if the game uses physical projectile collision.
+* Avoid spawning bullets when the weapon is reloading, empty, or otherwise unable to fire.
+
+### Aiming While Moving
+
+* Allow the Marine to aim while walking, standing, crouching, and jumping.
+* Allow the player to change horizontal direction in midair using A and D without breaking the aiming system.
+* Keep the weapon pointed toward the mouse cursor when possible, even when the Marine's body changes facing direction.
+* Prevent the weapon from suddenly flipping to an incorrect angle when the Marine turns around.
+* Ensure the weapon's muzzle position and projectile direction remain consistent with the character's orientation.
+
+## 3. RELOADING — R KEY
+
+* Press R to reload the weapon.
+* Implement a configurable reload duration.
+* Transfer ammunition from the reserve ammunition pool into the magazine when reloading completes.
+* Never exceed the weapon's magazine capacity.
+* If the magazine is already full, do not initiate a reload.
+* If reserve ammunition is zero, prevent reloading.
+* Prevent shooting during the reload animation unless the existing weapon design explicitly supports interruptible reloads.
+* Play the existing reload animation if available.
+* Keep ammunition values synchronized with the user interface.
+* Display current ammunition in a format such as `12 / 60`, where 12 is the ammunition remaining in the magazine and 60 is the reserve.
+* Prevent repeated R inputs from restarting the reload timer indefinitely.
+* Make the reload duration and ammunition capacity configurable.
+
+If the player presses R again during reloading, do not restart the reload animation or reset the timer.
+
+## 4. MELEE ATTACK — Q KEY
+
+* Press Q to perform a short-range punch.
+* Use the existing punch animation if available.
+* The attack should have a brief wind-up, an active damage window, and a recovery period.
+* Create a short-range melee hitbox near the Marine's upper body or fists.
+* Position the hitbox according to the direction the Marine is facing.
+* Damage enemies only when they intersect the active hitbox.
+* Prevent one punch from damaging the same enemy repeatedly during a single attack.
+* Implement configurable melee damage, range, attack duration, and cooldown.
+* Add a short attack cooldown to prevent unlimited attack-speed exploits.
+* If the player presses Q repeatedly, queue or ignore extra attacks according to the existing combat system.
+* Prevent the melee hitbox from remaining active after the attack finishes.
+* Allow melee attacks while grounded. Support airborne melee attacks only if compatible with the existing game design.
+* Do not allow melee attacks to interrupt other critical animations unless explicitly intended.
+
+The punch should feel powerful, responsive, and suitable for a heavily armored Marine.
+
+## 5. INTERACTION — E KEY
+
+* Press E to interact with nearby objects.
+* Interactable objects may include doors, switches, control panels, pickups, terminals, and other gameplay objects.
+* Detect interactable objects within a configurable radius or using the project's existing interaction system.
+* Show an interaction prompt when the Marine is close enough, such as `E — Interact`.
+* Hide the prompt when the Marine moves out of range.
+* When E is pressed, interact with the nearest valid object or the object selected by the existing interaction system.
+* Ensure a single key press triggers only one interaction unless the object explicitly requires holding the key.
+* Support objects that can be used only once, such as one-time switches or pickups.
+* Prevent interactions through walls when the game uses line-of-sight checks.
+* Keep the interaction system extensible so new interactable objects can be added without rewriting the player controller.
+
+## 6. CHARACTER ANIMATION SYSTEM
+
+Use the Marine sprites and animation assets already present in the project.
+
+Do not generate a new character model or replace the existing artwork.
+
+Create or integrate an animation controller that supports the following states, depending on which animations are available:
+
+* Idle
+* Run or walk left
+* Run or walk right
+* Jumping
+* Rising
+* Falling
+* Landing
+* Crouching
+* Crouch-walking
+* Aiming
+* Shooting
+* Reloading
+* Punching
+* Interacting
+* Death, if already supported
+
+### Animation Rules
+
+* Prioritize animations according to gameplay state.
+* Shooting should play its firing animation without unnecessarily interrupting movement.
+* Aiming should remain active while the right mouse button is held.
+* Releasing the right mouse button should return the weapon to its normal pose.
+* Reloading should play to completion unless the design explicitly supports interruption.
+* Punching should not repeatedly restart every frame while Q is held.
+* The walk animation should reflect actual movement.
+* Jump and fall animations should be determined by vertical velocity and grounded state.
+* Avoid animation flickering caused by competing state transitions.
+* If a required animation does not exist, implement a reasonable fallback using available sprites rather than inventing missing sprite assets.
+
+Use animation blending or layered animations if supported by the engine. For example, the legs may continue their movement animation while the upper body aims and fires.
+
+## 7. PHYSICS AND COLLISION
+
+Implement a stable 2D platformer physics system using the engine's existing physics tools.
+
+Requirements:
+
+* Reliable ground detection.
+* Configurable gravity and jump force.
+* Stable horizontal movement.
+* Correct wall and platform collisions.
+* No unintended double jumps.
+* No falling through floors.
+* No getting stuck on platform edges.
+* No unexpected teleportation when crouching or standing.
+* Correct collision handling during jumps and landings.
+* Consistent behavior on moving platforms if the project supports them.
+
+Use the engine's native physics and collision features instead of building a competing physics system from scratch.
+
+## 8. INPUT PRIORITY AND STATE MANAGEMENT
+
+Implement a clear state-management system so simultaneous inputs behave predictably.
+
+Examples:
+
+* A + W: Jump while moving left.
+* D + W: Jump while moving right.
+* A + right mouse button: Move left while aiming.
+* D + right mouse button: Move right while aiming.
+* W + right mouse button: Jump while aiming.
+* S + right mouse button: Crouch while aiming.
+* Left mouse button while aiming: Fire toward the cursor.
+* Q: Execute a melee attack.
+* R: Reload if reloading is allowed.
+* E: Interact with a nearby valid object.
+
+Movement and combat should coexist wherever logically possible.
+
+Do not let a temporary action such as shooting accidentally cancel gravity, movement, or collision detection.
+
+Use a clean state architecture rather than a long collection of conflicting Boolean flags. Separate the following concerns where practical:
+
+* Locomotion
+* Grounded and airborne state
+* Aiming
+* Weapon firing
+* Reloading
+* Melee combat
+* Interaction
+* Animation selection
+
+Prevent invalid state combinations and ensure that all states return to a valid idle, moving, aiming, or airborne state after completion.
+
+## 9. CAMERA AND GAME WORLD
+
+This is a flat 2D side-scrolling platformer with classic retro-game movement.
+
+* Preserve the existing level design and camera system.
+* If a camera-follow system already exists, integrate the Marine controller with it.
+* Do not introduce 3D movement or unnecessary depth-axis controls.
+* Keep the character on the intended 2D movement plane.
+* Make mouse aiming work correctly even when the camera moves or zooms.
+* Convert screen-space mouse coordinates into world-space aiming coordinates.
+* Avoid adding a new camera system if the project already has one.
+
+## 10. CODE QUALITY AND PROJECT INTEGRATION
+
+Before implementing anything:
+
+1. Inspect the project's files and existing architecture.
+2. Identify the game engine and the correct player-controller entry point.
+3. Locate the existing Marine sprite sheets, animation clips, weapon assets, and sound effects.
+4. Identify any existing movement, collision, combat, and input systems.
+5. Determine which features already work and avoid duplicating them.
+
+During implementation:
+
+* Follow the project's existing coding conventions.
+* Use the project's existing input system or input mappings.
+* Keep movement, combat, interactions, and animation logic modular.
+* Expose important gameplay values as configurable variables.
+* Avoid hardcoding asset paths if the project uses a resource-management system.
+* Do not delete or overwrite unrelated project files.
+* Do not replace existing assets with generated placeholders.
+* Avoid adding external dependencies unless necessary.
+* Add comments only where they clarify non-obvious logic.
+* Handle missing assets and invalid states safely.
+
+If the project is incomplete, implement the controller in a way that fits the existing architecture and clearly identify any missing dependencies.
+
+#Damage dealt by marine and also hp
+Marine has 20 Hit points (explode on death)
+gun deals 3 damage on hit (5 rounds of bullets per magazine) (reload takes 2 seconds)
+punch deals 2 damage
+
+## 11. TESTING CHECKLIST
+
+After implementation, run the project and verify the following:
+
+MOVEMENT
+
+* [ ] A moves the Marine left.
+* [ ] D moves the Marine right.
+* [ ] W jumps.
+* [ ] A and D provide horizontal control in midair.
+* [ ] S crouches.
+* [ ] The Marine cannot jump repeatedly in midair.
+* [ ] The Marine collides correctly with platforms and walls.
+
+COMBAT
+
+* [ ] Right mouse button enables aiming.
+* [ ] Releasing right mouse button disables aiming.
+* [ ] Left mouse button fires the weapon.
+* [ ] Shots travel toward the cursor.
+* [ ] Aiming works while jumping and moving.
+* [ ] R reloads the weapon correctly.
+* [ ] Reloading respects magazine capacity and reserve ammunition.
+* [ ] Q performs a short-range punch.
+* [ ] Punches damage enemies only during the active attack window.
+
+INTERACTION
+
+* [ ] E interacts with nearby objects.
+* [ ] Interaction prompts appear and disappear correctly.
+* [ ] Interactions cannot be triggered repeatedly by a single press.
+
+ANIMATIONS
+
+* [ ] Existing sprites and animations are used correctly.
+* [ ] Movement, jumping, crouching, aiming, shooting, reloading, and punching trigger the appropriate animations.
+* [ ] Animations do not flicker or become stuck.
+* [ ] The Marine faces the correct direction.
+* [ ] The weapon remains aligned with the aiming direction.
+
+INTEGRATION
+
+* [ ] Existing levels and assets remain intact.
+* [ ] Camera movement does not break aiming.
+* [ ] No major errors appear in the console.
+* [ ] No duplicate input handling or conflicting physics systems have been introduced.
+
+## FINAL REQUIREMENT
+
+Implement the working controls directly in the existing project rather than merely describing how to implement them.
+
+Do not rebuild the entire game. Focus on the player controller, input handling, animation integration, combat, and interactions.
+
+Once complete, provide a concise summary of:
+
+1. Files created or modified.
+2. Controls implemented.
+3. Existing animations and assets reused.
+4. Tests performed and their results.
+5. Any missing assets or unfinished functionality.
+
+If a feature cannot be completed because an asset, system, or dependency is missing, explain the limitation clearly instead of claiming it works.
+
+**Priority: responsive controls, reliable 2D physics, accurate mouse aiming, polished combat, correct animation transitions, and compatibility with the existing project.**

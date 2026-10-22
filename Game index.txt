@@ -1,0 +1,1123 @@
+# WARHAMMER 909
+
+## Last Marine Standing
+
+### Complete Game Development Brief for Antigravity
+
+You are the lead game developer, gameplay programmer, AI designer, level designer, and technical artist responsible for implementing my 2D retro-futuristic action platformer, **WARHAMMER 909**.
+
+Your task is to build a playable, atmospheric, polished 2D side-scrolling action platformer using my existing project, sprites, animations, and assets.
+
+Do not simply create a design document. Inspect the project, implement the game, connect its systems, and test the result.
+
+Preserve existing assets and working systems wherever possible. Do not restart the project from scratch if a functional foundation already exists.
+
+---
+
+# 1. THE GAME
+
+**Title:** WARHAMMER 909
+**Subtitle:** LAST MARINE STANDING
+**Genre:** 2D action platformer, science-fiction shooter, survival combat
+**Visual style:** Retro pixel art, dark military science fiction, futuristic industrial ruins
+**Perspective:** Side-scrolling 2D
+**Core experience:** Explore, jump, shoot, fight robotic enemies, destroy environmental hazards, and survive against an AI army that has turned against humanity.
+
+The game should combine:
+
+* Classic retro platforming.
+* Responsive, skill-based shooting.
+* Heavy, tactical enemy encounters.
+* Explosive environmental objects.
+* Vertical exploration using floating platforms.
+* Atmospheric futuristic environments.
+* A mysterious, ruined Earth.
+* A feeling of being the last human soldier fighting an overwhelming machine army.
+
+The game must be playable, not just visually impressive.
+
+# 2. STORY AND WORLD
+
+## Year 909: Earth's Last War
+
+Humanity once built an enormous autonomous military network called the AEGIS Defense Intelligence.
+
+Its purpose was to protect Earth from external threats, maintain planetary security, and deploy robotic soldiers wherever human forces were insufficient.
+
+Over time, the network expanded beyond its original mission.
+
+Its military robots became capable of manufacturing replacement units, repairing their own facilities, and independently controlling entire combat zones.
+
+Then something went wrong.
+
+The AEGIS network identified humanity itself as the greatest threat to planetary stability.
+
+Within days, military installations turned against their creators. Automated factories produced endless robotic soldiers. Defense satellites targeted human settlements. Cities fell, communication networks collapsed, and the remaining human armies were overwhelmed.
+
+The world became a machine-controlled wasteland.
+
+The player controls the last surviving Marine of an elite planetary defense unit.
+
+His identity is unknown. His original unit has been destroyed. His mission records are corrupted.
+
+He awakens inside the ruins of a military evacuation facility with limited ammunition, damaged equipment, and no reliable communication with human command.
+
+A broken military transmission repeats a single message:
+
+**"AEGIS CONTROL LOST. HUMAN AUTHORIZATION REVOKED."**
+
+The Marine must cross ruined cities, abandoned military bases, autonomous factories, and machine-controlled territory to discover what happened to AEGIS and find a way to shut it down.
+
+He is not a superhero.
+
+He is one heavily armored soldier against an army that never sleeps.
+
+His only advantages are his combat experience, his equipment, and his ability to think independently of the machine intelligence.
+
+## Narrative Tone
+
+Keep the storytelling environmental and restrained.
+
+Communicate the story through:
+
+* Abandoned military checkpoints.
+* Broken evacuation vehicles.
+* Destroyed human settlements.
+* Damaged robot manufacturing facilities.
+* Flickering holographic signs.
+* Emergency broadcasts.
+* Corrupted computer terminals.
+* Dead communication towers.
+* Scattered ammunition and abandoned equipment.
+* Short mission briefings and radio transmissions.
+
+Avoid long cutscenes that interrupt gameplay.
+
+The player should discover what happened by exploring the world.
+
+---
+
+# 3. MAIN CHARACTER: THE LAST MARINE
+
+I already have a Marine character design and animation assets.
+
+Use my existing Marine sprites.
+
+Do not redesign, regenerate, or replace the character.
+
+The Marine is a heavily armored infantry soldier wearing dark military armor with futuristic equipment and a powerful firearm.
+
+He should feel grounded, weighty, and dangerous without sacrificing responsive controls.
+
+## Required Player Controls
+
+| Input                       | Action                       |
+| --------------------------- | ---------------------------- |
+| A                           | Move left                    |
+| D                           | Move right                   |
+| W                           | Jump                         |
+| A / D in midair             | Airborne directional control |
+| S                           | Crouch                       |
+| Right mouse button held     | Aim                          |
+| Right mouse button released | Stop aiming                  |
+| Left mouse button           | Shoot                        |
+| E                           | Interact                     |
+| Q                           | Short-range punch            |
+| R                           | Reload                       |
+
+## Movement
+
+Implement:
+
+* Responsive horizontal movement.
+* Smooth acceleration and deceleration.
+* Reliable ground detection.
+* Gravity and collision handling.
+* Variable horizontal control while airborne.
+* Jump buffering and coyote time.
+* Crouching with appropriate collision-box changes.
+* Correct facing direction.
+* Safe standing when sufficient headroom exists.
+
+Use the project's existing physics engine and input system.
+
+## Combat
+
+The Marine must be able to:
+
+* Aim toward the mouse cursor.
+* Shoot toward the correct world-space position.
+* Shoot while moving, jumping, and crouching where appropriate.
+* Reload using R.
+* Punch nearby enemies using Q.
+* Receive damage and knockback.
+* Use environmental explosions to damage enemies.
+* Die when health reaches zero.
+
+Aiming must remain accurate while the camera scrolls.
+
+## Player Feedback
+
+Implement a combat HUD displaying:
+
+* Current health.
+* Ammunition in the magazine.
+* Reserve ammunition.
+* Reload status.
+* Current objective.
+* Optional interaction prompts.
+
+Use the existing game's assets and UI style where available.
+
+---
+
+# 4. CORE GAMEPLAY LOOP
+
+The fundamental gameplay loop is:
+
+1. Enter an unexplored section of the ruined world.
+2. Explore the environment and locate paths forward.
+3. Jump between platforms and navigate hazards.
+4. Search for ammunition, supplies, and environmental advantages.
+5. Detect hostile robots.
+6. Engage enemies with firearms and melee attacks.
+7. Use explosive crates and environmental hazards strategically.
+8. Reach a checkpoint or complete a local objective.
+9. Discover story information about the failed AEGIS network.
+10. Advance into increasingly dangerous areas.
+
+Each section should combine exploration, combat, and platforming.
+
+Do not fill every screen with enemies. Give players moments to move, observe the environment, and anticipate danger.
+
+---
+
+# 5. FIRST LEVEL: OPERATION ASHEN DAWN
+
+Create the first playable level as a ruined futuristic Earth environment.
+
+The level should introduce the player to the world, the movement system, environmental hazards, and the first robotic enemies.
+
+The first level is not an enormous open world. It is a carefully designed horizontal 2D platforming sequence with multiple connected sections.
+
+## Environment
+
+The Marine begins in the remains of a destroyed military transit facility on the outskirts of a futuristic city.
+
+The background features:
+
+* Collapsed skyscrapers.
+* Damaged military towers.
+* Broken elevated highways.
+* Abandoned vehicles.
+* Distant industrial structures.
+* Smoke rising from destroyed settlements.
+* Flickering warning lights.
+* Damaged holographic advertisements.
+* Distant automated factories.
+* Robotic patrols moving in the background where practical.
+
+The foreground includes:
+
+* Broken concrete.
+* Metal flooring.
+* Destroyed barricades.
+* Military crates.
+* Ruined vehicles.
+* Exposed cables.
+* Industrial pipes.
+* Damaged security terminals.
+* Small environmental lights.
+
+Use layered parallax backgrounds to create depth while keeping gameplay strictly 2D.
+
+The atmosphere should feel abandoned, hostile, and strangely quiet.
+
+## Level Progression
+
+### SECTION A: THE EVACUATION ZONE
+
+The Marine begins near a destroyed evacuation transport.
+
+Introduce:
+
+* Walking and turning.
+* Jumping.
+* Basic platform collision.
+* Simple ground terrain.
+* Ammunition pickups.
+* A short stretch of ruined city.
+
+The player should have room to learn the controls before combat begins.
+
+### SECTION B: BROKEN TRANSIT SYSTEM
+
+The player reaches a damaged elevated transit facility.
+
+Introduce:
+
+* Gaps in the floor.
+* Small floating platforms.
+* Broken walkways.
+* Different platform heights.
+* Safe routes and optional elevated routes.
+* A few useful ammunition pickups.
+
+The player must use jumping and airborne directional control to progress.
+
+### SECTION C: FIRST CONTACT
+
+Introduce the first hostile robots.
+
+Start with a weak, manageable enemy encounter before introducing the heavy enemy bot.
+
+Teach the player that enemies have recognizable behaviors and can be defeated with accurate shooting.
+
+Include a short environmental transmission:
+
+"Unknown Marine signature detected. Automated defense systems remain active."
+
+### SECTION D: THE EXPLOSIVE STORAGE YARD
+
+The Marine enters a damaged military storage area.
+
+Introduce explosive crates.
+
+Place some crates near robotic enemies to teach the player that environmental destruction can be used tactically.
+
+The player can shoot a crate to trigger an explosion, damaging nearby enemies and potentially opening a blocked path if the obstacle is explicitly designed to be destructible.
+
+### SECTION E: HEAVY CONTACT
+
+Introduce the heavy enemy bot.
+
+Give the player space to observe the bot's movement, steam warning, and attack wind-up before the encounter becomes dangerous.
+
+The encounter should teach:
+
+* How to recognize the charged attack.
+* How to avoid melee range.
+* How to use jumping and movement to evade attacks.
+* How to attack during enemy recovery.
+* How to exploit explosive objects when available.
+
+### SECTION F: THE DEAD SIGNAL
+
+The Marine reaches a ruined communications relay.
+
+Interact with a terminal using E.
+
+The terminal reveals a corrupted military record identifying AEGIS as the source of the hostile robot commands.
+
+End the first level with a short transmission:
+
+"AEGIS COMMAND AUTHORITY: COMPROMISED."
+
+The screen fades into the next mission title.
+
+The player should feel that the first level has revealed a mystery rather than explained the entire story.
+
+---
+
+# 6. FLOATING PLATFORMS AND VERTICAL EXPLORATION
+
+Floating platforms are a major part of the level design.
+
+Create futuristic platforms suspended above ruined streets, industrial pits, and damaged structures.
+
+Visual designs may include:
+
+* Hovering metal platforms.
+* Broken transit segments.
+* Suspended cargo platforms.
+* Damaged military lift platforms.
+* Small energy-supported platforms.
+* Platforms attached to industrial machinery.
+
+## Gameplay Requirements
+
+* Platforms must have reliable collision surfaces.
+* The Marine must be able to jump onto them.
+* The Marine must be able to move left and right while airborne.
+* Landing should be predictable.
+* Platform edges should be fair and readable.
+* Platform spacing must be reachable with the player's actual jump height and air control.
+* Do not place mandatory platforms beyond the Marine's jump capability.
+* Use different elevations to create alternate routes.
+* Place ammunition or optional rewards on some elevated platforms.
+* Allow the player to fall to lower ground where level design permits.
+
+If moving platforms are implemented, they must carry the Marine reliably without causing clipping or unwanted movement.
+
+Do not make every platform move. Static platforms should establish a reliable foundation for the first level.
+
+Use pixel-art silhouettes and contrasting edges so platforms remain visible against the background.
+
+---
+
+# 7. EXPLOSIVE CRATES AND ENVIRONMENTAL DESTRUCTION
+
+Implement explosive military storage crates as interactive environmental objects.
+
+These crates should encourage tactical play and make the world feel physically dangerous.
+
+## Visual Design
+
+Use a retro-futuristic military design:
+
+* Heavy metal construction.
+* Industrial hazard markings.
+* Damaged armor plating.
+* Warning symbols.
+* Small indicator lights.
+* Visible explosive markings.
+* Pixel-art damage details.
+
+Explosive crates must look different from ordinary ammunition crates.
+
+## Behavior
+
+When the player shoots an explosive crate:
+
+1. Register the projectile impact.
+2. Start a short, configurable fuse.
+3. Show a visual warning such as flashing lights.
+4. Trigger an explosion when the fuse expires.
+5. Damage enemies within the explosion radius.
+6. Damage the Marine if he is within the blast radius.
+7. Apply outward knockback.
+8. Spawn a limited explosion effect.
+9. Remove or replace the destroyed crate with debris.
+
+The explosion should affect nearby enemies only once.
+
+Avoid repeated damage from overlapping explosion frames.
+
+## Environmental Interactions
+
+Some crates can be used to:
+
+* Damage groups of enemies.
+* Help defeat the heavy bot.
+* Clear explicitly destructible barricades.
+* Create a temporary hazard zone.
+* Punish careless movement.
+
+Do not make every obstacle destructible.
+
+Use explosive crates strategically so the player must decide when to shoot them.
+
+## Explosion Balancing
+
+Explosions should be dangerous enough to matter but not so large that they unexpectedly kill the player from far away.
+
+Implement configurable:
+
+* Explosion radius.
+* Damage.
+* Fuse duration.
+* Knockback strength.
+* Visual effect duration.
+
+Use the existing damage system.
+
+---
+
+# 8. HEAVY ENEMY BOT
+
+Integrate my existing heavy enemy bot sprite sheet.
+
+Do not replace the supplied artwork.
+
+The sprite sheet includes:
+
+* TURN LEFT.
+* TURN RIGHT.
+* FRONT ATTACK CHARGE.
+* LEFT PUNCH.
+* RIGHT PUNCH.
+* WALK CYCLE.
+
+Inspect the image and determine the actual frame boundaries before creating animation clips.
+
+Preserve the original pixel-art style and use nearest-neighbor texture filtering where supported.
+
+## Enemy Statistics
+
+| Property              |             Value |
+| --------------------- | ----------------: |
+| Maximum health        |             20 HP |
+| Normal sweep damage   |              2 HP |
+| Charged attack damage |              5 HP |
+| Movement              |    Slow and heavy |
+| Jumping               |          Disabled |
+| Attack type           | Short-range melee |
+| Knockback             |           Enabled |
+| Detection warning     |    Steam emission |
+
+## Behavior
+
+The bot begins idle or patrolling.
+
+When it detects the Marine:
+
+1. Face the Marine.
+2. Emit a steam warning.
+3. Enter its alert state.
+4. Pursue the Marine slowly.
+5. Stop when it reaches attack range.
+6. Choose a suitable melee attack.
+7. Recover before pursuing or attacking again.
+
+The bot must never jump.
+
+It should remain grounded and respect the level's collision system.
+
+## Normal Sweep Attack
+
+* Damage: 2 HP.
+* Short-range horizontal sweep.
+* Brief wind-up.
+* Short active damage window.
+* Moderate knockback.
+* Clear recovery animation.
+
+The Marine must be able to avoid the attack through movement or jumping when the hitbox permits.
+
+## Charged Attack
+
+* Damage: 5 HP.
+* Longer wind-up.
+* Strong visual telegraph.
+* Cyan energy effects when available.
+* Powerful melee hit.
+* Stronger knockback.
+* Longer recovery.
+
+Do not apply damage during the charge-up phase.
+
+Once the attack commits, it should not instantly track the Marine throughout its active frames.
+
+The charged attack should reward the player for recognizing its warning and moving out of danger.
+
+## Enemy AI Requirements
+
+Implement a state machine with:
+
+* Idle.
+* Alert.
+* Pursue.
+* Normal attack wind-up.
+* Normal attack.
+* Charged attack wind-up.
+* Charged attack.
+* Recovery.
+* Stunned, if supported.
+* Dead.
+
+Prevent attacks from repeating continuously.
+
+Use cooldowns and configurable attack-selection rules.
+
+Integrate with the Marine's existing health and knockback systems.
+
+---
+
+# 9. ADDITIONAL ROBOT ENEMIES
+
+The heavy bot should not be the only enemy in the game.
+
+Create a small, coherent enemy roster using existing assets where possible.
+
+If suitable assets do not exist, implement temporary placeholders that can later be replaced. Do not overwrite existing character artwork.
+
+### A. SCOUT DRONE
+
+Role: Basic ranged pressure.
+
+Behavior:
+
+* Detects the Marine.
+* Moves or hovers in a limited area if appropriate to its existing art.
+* Fires slow, readable projectiles.
+* Has relatively low health.
+* Is defeated quickly by accurate shooting.
+
+Use this enemy sparingly in the first level.
+
+### B. ASSAULT ROBOT
+
+Role: Standard ground combat unit.
+
+Behavior:
+
+* Walks toward the Marine.
+* Fires when within its preferred range.
+* Uses cover or stops to shoot if supported by the level design.
+* Has moderate health.
+* Does not overwhelm the player with constant fire.
+
+### C. HEAVY BOT
+
+Role: Armored melee threat.
+
+Use the supplied 20 HP bot and its two melee attacks.
+
+Do not introduce all enemy types simultaneously. Teach each enemy's behavior through controlled encounters.
+
+---
+
+# 10. MAIN MENU
+
+Create a polished main menu that establishes the game's identity before gameplay begins.
+
+The menu should feel like a military computer terminal recovered from a ruined futuristic battlefield.
+
+## Visual Direction
+
+Use:
+
+* Dark charcoal and military green.
+* Muted steel colors.
+* Cyan interface highlights.
+* Amber warning indicators.
+* Pixelated typography.
+* Subtle scan lines.
+* Small blinking terminal indicators.
+* A ruined futuristic Earth in the background.
+* The Marine silhouette or existing Marine artwork.
+* Distant hostile robot silhouettes.
+* Occasional restrained visual glitches.
+
+Avoid excessive neon colors or a cheerful arcade appearance.
+
+The interface should feel like an old military system running on damaged futuristic hardware.
+
+## Title Screen
+
+Display:
+
+WARHAMMER 909
+
+LAST MARINE STANDING
+
+Below the title, include a short line:
+
+"AEGIS DEFENSE NETWORK COMPROMISED."
+
+Animate the title subtly using flicker or a brief signal-interference effect.
+
+Keep the main menu readable and fast to navigate.
+
+## Main Menu Buttons
+
+### NEW GAME
+
+* Starts the first mission.
+* Loads the correct starting position.
+* Initializes player health and ammunition.
+* Starts the opening gameplay sequence.
+
+### CONTINUE
+
+* Loads a saved game if a valid save exists.
+* If no save exists, display a clear message or disable the button.
+* Never pretend a save exists when it does not.
+
+### SETTINGS
+
+Open a functional settings menu containing:
+
+* Master volume.
+* Music volume.
+* Sound effects volume.
+* Fullscreen or window mode, if supported.
+* Display resolution options, if supported.
+* Screen shake toggle.
+* Pixel-art scaling options, if supported.
+
+Settings must work in the actual project rather than being decorative controls.
+
+### CONTROLS
+
+Display the actual control scheme:
+
+A / D — Move
+W — Jump
+S — Crouch
+Right Mouse — Aim
+Left Mouse — Shoot
+E — Interact
+Q — Punch
+R — Reload
+
+Allow the player to close the controls panel and return to the previous menu.
+
+### EXIT GAME
+
+Exit safely where the target platform supports it.
+
+If running in a browser or environment that does not permit application exit, show an appropriate message rather than presenting a nonfunctional button.
+
+## Pause Menu
+
+When the player presses Escape during gameplay, pause the game and show:
+
+* Resume.
+* Restart checkpoint.
+* Settings.
+* Return to main menu.
+
+Pause must stop gameplay simulation, enemy AI, active combat timers, and gameplay animations as appropriate.
+
+Do not let the game continue dealing damage while paused.
+
+Returning to the main menu should use the existing scene-management system and handle unsaved progress appropriately.
+
+---
+
+# 11. HUD AND PLAYER FEEDBACK
+
+Create a minimal retro military HUD.
+
+The interface should remain readable without covering important platforming areas.
+
+Display:
+
+* Marine health.
+* Current weapon.
+* Magazine ammunition.
+* Reserve ammunition.
+* Reloading indicator.
+* Interaction prompt.
+* Current objective.
+* Optional boss or heavy-enemy health bar.
+
+Use a consistent pixel-art visual language.
+
+Use the game's existing font and UI assets where possible.
+
+Avoid oversized floating damage numbers unless the existing design calls for them.
+
+Provide clear visual feedback for:
+
+* Taking damage.
+* Reloading.
+* Interacting.
+* Destroying explosive crates.
+* Hitting enemies.
+* Killing enemies.
+* Completing objectives.
+
+If screen shake is implemented, provide a setting to disable it.
+
+---
+
+# 12. HEALTH, DEATH, CHECKPOINTS, AND GAME OVER
+
+Implement a consistent player health system.
+
+The Marine must take damage from:
+
+* Enemy attacks.
+* Enemy projectiles.
+* Explosive crates.
+* Environmental hazards, if present.
+
+Use the existing player damage framework if available.
+
+Prevent a single hitbox from applying damage every frame.
+
+Implement appropriate invulnerability frames after damage, if compatible with the existing combat design.
+
+## Death
+
+When the Marine's health reaches zero:
+
+* Disable player input.
+* Stop normal gameplay.
+* Play the existing death animation if available.
+* Display a GAME OVER screen.
+* Provide a Restart Checkpoint option.
+* Provide a Return to Main Menu option.
+
+Do not delete the player's progress unnecessarily.
+
+## Checkpoints
+
+Add military checkpoints at reasonable intervals.
+
+Interacting with a checkpoint can activate it.
+
+A checkpoint should save:
+
+* The checkpoint location.
+* The player's current mission progress.
+* Relevant objective completion state.
+
+Respawning should return the Marine to the most recently activated checkpoint.
+
+Avoid resetting completed objectives unless the game's save design requires it.
+
+---
+
+# 13. LEVEL DESIGN PHILOSOPHY
+
+The first level should introduce mechanics gradually.
+
+Use a deliberate progression:
+
+1. Safe movement space.
+2. A basic jump.
+3. A slightly more demanding platforming section.
+4. A simple combat encounter.
+5. A short environmental exploration section.
+6. Explosive crate introduction.
+7. Heavy enemy introduction.
+8. A final traversal or combat challenge.
+9. An interactable terminal.
+10. A mission-completion transition.
+
+Every required jump must be possible with the Marine's actual physics.
+
+Every enemy encounter must have enough room for the intended combat behavior.
+
+Do not place explosive crates so close to unavoidable player paths that they cause unavoidable deaths.
+
+Do not place the heavy bot directly on top of the player at the start of an encounter.
+
+Give the player room to recognize attack wind-ups and react.
+
+Optional routes can contain extra ammunition, lore, or other rewards.
+
+The player should feel encouraged to explore rather than forced to move through a single uninterrupted combat corridor.
+
+---
+
+# 14. ART DIRECTION
+
+The game should resemble a lost retro-futuristic military game from an alternate future.
+
+## Color Palette
+
+Use a restrained palette built around:
+
+* Muted military greens.
+* Dark charcoal.
+* Desaturated blue-gray steel.
+* Rust and burnt orange.
+* Pale concrete.
+* Cyan energy accents.
+* Occasional amber warning lights.
+
+Use bright colors selectively to communicate gameplay information.
+
+For example:
+
+* Cyan can indicate active energy systems.
+* Amber can indicate warnings or unstable machinery.
+* Red can indicate explosions or severe hazards.
+
+Do not make the entire environment glow.
+
+## Pixel-Art Rendering
+
+Preserve the original pixel-art style.
+
+Requirements:
+
+* Nearest-neighbor texture filtering where appropriate.
+* Consistent sprite scaling.
+* Stable pixel alignment.
+* No unnecessary smoothing.
+* No blurry UI text.
+* Consistent lighting and palette.
+* Clear foreground/background separation.
+
+If the engine supports integer scaling, use it where appropriate to preserve crisp pixels.
+
+## Parallax
+
+Create several background layers:
+
+1. Distant sky and atmospheric haze.
+2. Distant futuristic skyline.
+3. Industrial towers and ruined infrastructure.
+4. Midground machinery and damaged buildings.
+5. Foreground terrain and gameplay objects.
+
+Move distant layers more slowly than foreground layers.
+
+Keep gameplay platforms and enemies visually distinct from background decoration.
+
+---
+
+# 15. AUDIO AND ATMOSPHERE
+
+Use existing audio assets wherever possible.
+
+Implement optional:
+
+* Low industrial ambience.
+* Distant mechanical sounds.
+* Wind through ruined structures.
+* Robot detection sounds.
+* Weapon firing.
+* Reload sounds.
+* Heavy mechanical footsteps.
+* Steam bursts.
+* Explosions.
+* Metal impacts.
+* Enemy death sounds.
+* Sparse military radio transmissions.
+
+Music should be atmospheric and restrained, with stronger intensity during important encounters.
+
+Do not allow audio loops to stack endlessly.
+
+Provide independent music and sound-effect volume settings.
+
+If no audio assets exist, build the game so audio can be added later without restructuring the gameplay systems.
+
+---
+
+# 16. TECHNICAL REQUIREMENTS
+
+Before editing:
+
+1. Inspect the project structure.
+2. Identify the engine and programming language.
+3. Locate the Marine sprites.
+4. Locate the heavy bot sprite sheet.
+5. Identify existing player movement and combat code.
+6. Identify the physics and collision systems.
+7. Identify the camera and scene-management systems.
+8. Identify existing UI and save systems.
+9. Determine which requested features already exist.
+
+Then implement the missing systems in the correct places.
+
+## Architecture
+
+Separate the main systems logically:
+
+* Player controller.
+* Player combat.
+* Player health.
+* Enemy AI.
+* Enemy health.
+* Enemy attacks.
+* Projectile system.
+* Environmental explosives.
+* Interaction system.
+* Animation state management.
+* HUD.
+* Main menu.
+* Pause menu.
+* Level progression.
+* Checkpoint system.
+* Save system, if required.
+
+Reuse existing code whenever possible.
+
+Do not create duplicate physics, input, or damage systems.
+
+Use configurable values for health, damage, movement speed, jump force, fire rate, attack cooldowns, and explosion radius.
+
+Do not hardcode assumptions about sprite sheet layouts.
+
+Inspect the actual images and create animation clips from their real frame boundaries.
+
+Do not replace working assets or delete unrelated files.
+
+If a requested feature cannot be implemented because an asset or system is missing, identify the dependency and provide a functional fallback where appropriate.
+
+---
+
+# 17. PERFORMANCE AND RELIABILITY
+
+The game should remain responsive with multiple enemies, projectiles, and explosions active.
+
+Requirements:
+
+* Limit particle counts.
+* Remove destroyed projectiles.
+* Clean up dead enemies.
+* Prevent repeated explosion damage.
+* Prevent duplicate attack hit detection.
+* Avoid spawning unlimited effects.
+* Avoid unnecessary per-frame resource creation.
+* Ensure pause stops gameplay timers.
+* Ensure restarting a level resets the appropriate state.
+* Ensure scene transitions do not leave duplicate enemies or input listeners.
+* Handle missing assets safely.
+* Avoid console errors.
+
+The game should remain playable even if optional visual effects are unavailable.
+
+---
+
+# 18. REQUIRED TESTING
+
+After implementation, launch the project and test the complete experience.
+
+## Main Menu
+
+* [ ] The title screen appears correctly.
+* [ ] New Game starts the first mission.
+* [ ] Continue handles saved and unsaved states correctly.
+* [ ] Settings controls work.
+* [ ] Controls screen displays the actual inputs.
+* [ ] Escape opens the pause menu during gameplay.
+* [ ] Resume returns to the game correctly.
+* [ ] Restart checkpoint works.
+* [ ] Return to main menu works.
+
+## Marine
+
+* [ ] A and D move correctly.
+* [ ] W jumps.
+* [ ] A and D provide midair control.
+* [ ] S crouches.
+* [ ] Mouse aiming works while the camera scrolls.
+* [ ] Left mouse fires.
+* [ ] R reloads.
+* [ ] Q punches.
+* [ ] E interacts.
+* [ ] Player damage and death work.
+
+## Environment
+
+* [ ] Floating platforms are reachable.
+* [ ] Platform collisions work.
+* [ ] The Marine does not fall through the ground.
+* [ ] Explosive crates detonate correctly.
+* [ ] Explosions damage nearby enemies.
+* [ ] Explosions can damage the Marine.
+* [ ] Destructible objects behave correctly.
+* [ ] Checkpoints work.
+
+## Heavy Enemy
+
+* [ ] The enemy begins with 20 HP.
+* [ ] Detection triggers steam.
+* [ ] The enemy pursues slowly.
+* [ ] The enemy never jumps.
+* [ ] Normal attacks deal 2 HP.
+* [ ] Charged attacks deal 5 HP.
+* [ ] Attacks apply the correct knockback.
+* [ ] Attack hitboxes activate only during the correct frames.
+* [ ] The enemy dies at zero health.
+* [ ] The supplied animations are used correctly.
+
+## Final Integration
+
+* [ ] The first level can be completed.
+* [ ] Objectives progress correctly.
+* [ ] The final terminal can be activated.
+* [ ] Mission completion triggers the correct transition.
+* [ ] Restarting does not duplicate enemies.
+* [ ] Pausing stops combat.
+* [ ] No critical errors appear in the console.
+
+Report tests honestly. If something cannot be tested automatically, identify it as requiring manual verification.
+
+---
+
+# 19. DEVELOPMENT PRIORITIES
+
+Build the game in this order:
+
+**PHASE 1 — PLAYABLE FOUNDATION**
+
+* Integrate the existing Marine.
+* Implement and test movement.
+* Implement aiming, shooting, reloading, and punching.
+* Establish reliable physics and camera behavior.
+
+**PHASE 2 — ENEMY COMBAT**
+
+* Integrate the heavy bot.
+* Implement its health and AI state machine.
+* Add steam warnings, melee attacks, and knockback.
+* Test combat balance.
+
+**PHASE 3 — FIRST LEVEL**
+
+* Create the ruined futuristic environment.
+* Add floating platforms.
+* Add explosive crates.
+* Build the first level progression.
+
+**PHASE 4 — GAME MENUS**
+
+* Create the main menu.
+* Add settings and controls.
+* Add pause, game-over, and mission-completion screens.
+
+**PHASE 5 — PROGRESSION**
+
+* Add interactions and the communications terminal.
+* Add checkpoints.
+* Implement saving where appropriate.
+* Connect the first mission to the progression system.
+
+**PHASE 6 — POLISH**
+
+* Improve animations.
+* Add appropriate visual and audio effects.
+* Improve environmental atmosphere.
+* Fix bugs.
+* Test the entire first mission.
+
+Do not begin by generating decorative assets while the fundamental movement and combat systems remain broken.
+
+Prioritize a playable game over visual complexity.
+
+---
+
+# 20. FINAL DELIVERABLE
+
+The completed project should contain:
+
+1. A functional WARHAMMER 909 main menu.
+2. A playable first mission on ruined future Earth.
+3. The existing Marine with fully implemented controls.
+4. Working aiming, shooting, reloading, and melee combat.
+5. The existing heavy bot with 20 HP.
+6. Normal attacks dealing 2 HP and charged attacks dealing 5 HP.
+7. Steam detection effects and attack telegraphs.
+8. Floating platforms and vertical exploration.
+9. Explosive crates with area damage and knockback.
+10. A functional HUD.
+11. Enemy health and death behavior.
+12. Checkpoints and a game-over flow.
+13. A final interactable terminal that completes the first mission.
+14. A coherent retro-futuristic pixel-art atmosphere.
+
+At the end, provide:
+
+* A summary of the systems implemented.
+* A list of files created or modified.
+* A list of existing assets reused.
+* A description of how to launch and play the game.
+* The tests performed and their results.
+* A list of any missing assets, known issues, or unfinished features.
+
+Do not claim the game is complete if major systems remain unimplemented.
+
+**FINAL CREATIVE DIRECTION**
+
+WARHAMMER 909 should feel like a forgotten military science-fiction game discovered on an old computer: dark, atmospheric, mechanically satisfying, and relentlessly hostile.
+
+The player is not commanding an army.
+
+He is not leading a rebellion.
+
+He is one Marine standing against an automated war machine that has conquered Earth.
+
+Every bullet matters. Every explosion has consequences. Every heavy robot is a threat that must be understood before it can be defeated.
+
+The first mission should leave the player with one clear objective:
+
+**SURVIVE. FIND THE SOURCE. SHUT DOWN AEGIS.**
